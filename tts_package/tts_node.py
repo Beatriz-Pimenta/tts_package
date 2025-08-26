@@ -11,14 +11,13 @@ import rclpy # ROS2 Python client library
 from rclpy.node import Node # Base class for all ROS2 nodes
 from std_msgs.msg import String # Message type (for text input)
 
-import pyttsx3 # Text-to-Speech engines
 import os # For file/folder handling
+import subprocess
 from datetime import datetime # For timestamped filenames
 
 import multiprocessing
 from ament_index_python.packages import get_package_share_directory # Helper to locate package directories
-import threading # For background worker thread
-import queue # Thread-safe queue for passing text messages
+
 # ------------------------------------------------------------
 
 
@@ -29,26 +28,19 @@ import queue # Thread-safe queue for passing text messages
 def speak_and_save(text, save_path):
     try:
         # Initialize the TTS engine
-        engine = pyttsx3.init()
+        # Set espeak parameters
+        voice = "en+f3"      # female English voice (change as needed)
+        speed = "180"        # words per minute
+        volume = "90"        # amplitude (0-200)
 
-        # --- SET VOICE PARAMETERS RIGHT AWAY ---
-        voices = engine.getProperty('voices')
-        engine.setProperty('voice', voices[1].id) # change index to pick a voice (0 = male; 1 = female)
-        engine.setProperty('rate', 180) # change the speech rate (words per minute)
-        engine.setProperty('volume', 0.9) # change the volume (varies between 0.0 and 1.0)
-        # ------------------------------------------
+        # Speak text using espeak with parameters
+        subprocess.run(['espeak', '-v', voice, '-s', speed, '-a', volume, text])
 
-        # Play the speech
-        engine.say(text)
-        engine.runAndWait()
-
-        # --- SAVE SPEECH TO A TIMESTAMPED .MP3 FILE ---
-        filename = f"tts_{datetime.now():%Y%m%d_%H%M%S}.mp3"
+        # Save speech audio to WAV file with same parameters
+        filename = f"tts_{datetime.now():%Y%m%d_%H%M%S}.wav"
         filepath = os.path.join(save_path, filename)
 
-        engine.save_to_file(text, filepath)
-        engine.runAndWait()
-        # ------------------------------------------------
+        subprocess.run(['espeak', '-v', voice, '-s', speed, '-a', volume, '-w', filepath, text])
 
         # Log that the file was saved and where it was saved to
         print(f"[TTS WORKER] Spoken and saved: {filepath}")
@@ -72,10 +64,6 @@ class TTSNode(Node):
             self.listener_callback, # calls self.listener_callback when a message arrives
             10 # queue size --- max stored messages if callback is slow
         )
-
-        # --- MESSAGE THREAD ---
-        self.tts_queue = queue.Queue()
-        # ------------------------------------------
 
         # --- SAVE FOLDER INSIDE PACKAGE SHARE DIRECTORY ---
         self.save_path = os.path.join(get_package_share_directory('tts_package'), 'audio') # save audio to: ros2_ws_new/src/tts_node/audio
