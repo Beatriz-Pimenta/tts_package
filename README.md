@@ -43,13 +43,14 @@ This project implements a text-to-speech (TTS) system using ROS 2, based on a pu
 
 - Before installing, ensure you have the following installed on your system:
   - ROS2 Humble
+  - espeak (command-line TTS engine)
   - libespeak-dev (for text-to-speech support)
   - pulseaudio (audio system for sound output)
 
 - On Ubuntu, you can install these dependencies with:
 ```
 sudo apt update
-sudo apt install -y libespeak-dev pulseaudio
+sudo apt install -y espeak libespeak-dev pulseaudio
 ```
 
 ---
@@ -67,7 +68,7 @@ rosdep update
 rosdep install --from-paths src --ignore-src -r -y
 
 # Install system dependencies (if not installed)
-sudo apt install -y libespeak-dev pulseaudio espeak
+sudo apt install -y espeak libespeak-dev pulseaudio
 
 # Install Python dependencies
 pip install -r requirements.txt
