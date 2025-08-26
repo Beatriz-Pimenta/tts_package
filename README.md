@@ -1,6 +1,6 @@
 # tts_package
 
-This project implements a text-to-speech (TTS) system using ROS 2, based on a publisher/subscriber communication pattern. The publisher_node.py sends text messages to the /tts_input topic, which tts_node.py receives to synthesize speech and save audio files in MP3 format. It automates audio generation and storage, making it useful for robotic applications or systems requiring dynamic speech output.
+This project implements a text-to-speech (TTS) system using ROS 2, based on a publisher/subscriber communication pattern. The publisher_node.py sends text messages to the /tts_input topic, which tts_node.py receives to synthesize speech and save audio files in WAV format. It automates audio generation and storage, making it useful for robotic applications or systems requiring dynamic speech output.
 
 ---
 
