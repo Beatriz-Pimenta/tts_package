@@ -67,7 +67,7 @@ rosdep update
 rosdep install --from-paths src --ignore-src -r -y
 
 # Install system dependencies (if not installed)
-sudo apt install -y libespeak-dev pulseaudio
+sudo apt install -y libespeak-dev pulseaudio espeak
 
 # Install Python dependencies
 pip install -r requirements.txt
