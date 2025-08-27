@@ -70,9 +70,6 @@ rosdep install --from-paths src --ignore-src -r -y
 # Install system dependencies (if not installed)
 sudo apt install -y espeak libespeak-dev pulseaudio
 
-# Install Python dependencies
-pip install -r requirements.txt
-
 # Build the package (run from your ROS 2 workspace root)
 colcon build --packages-select tts_package
 
