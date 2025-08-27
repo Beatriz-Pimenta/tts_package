@@ -12,10 +12,10 @@ from rclpy.node import Node # Base class for all ROS2 nodes
 from std_msgs.msg import String # Message type (for text input)
 
 import os # For file/folder handling
-import subprocess
+import subprocess # To run shell commands like espeak
 from datetime import datetime # For timestamped filenames
 
-import multiprocessing
+import multiprocessing # To run TTS in separate processes
 from ament_index_python.packages import get_package_share_directory # Helper to locate package directories
 
 # ------------------------------------------------------------
